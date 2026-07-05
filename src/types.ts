@@ -75,6 +75,10 @@ export interface DataTableProps<TData> {
   enableRowReorder?: boolean;
   /** Enable column visibility toggle panel. Default: false. */
   enableColumnVisibility?: boolean;
+  /** Enable CSV/Excel export button. Default: false. */
+  enableExport?: boolean;
+  /** File name for exports (without extension). Default: 'export'. */
+  exportFileName?: string;
 
   // --- Pagination ---
 

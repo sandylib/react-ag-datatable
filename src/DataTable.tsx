@@ -24,6 +24,7 @@ import { LoadingOverlay } from './overlays/LoadingOverlay';
 import { ErrorOverlay } from './overlays/ErrorOverlay';
 import { EmptyOverlay } from './overlays/EmptyOverlay';
 import { useDataSource } from './hooks/useDataSource';
+import { ExportButton } from './export/ExportButton';
 
 const modules = [AllCommunityModule];
 
@@ -49,6 +50,8 @@ export function DataTable<TData>({
   enableColumnReorder = false,
   enableRowReorder = false,
   enableColumnVisibility = false,
+  enableExport = false,
+  exportFileName,
   pagination: paginationProp,
   pageSize: pageSizeProp,
   pageSizeOptions: pageSizeOptionsProp,
@@ -302,9 +305,10 @@ export function DataTable<TData>({
         className,
       )}
     >
-      {enableColumnVisibility && (
-        <div className="flex justify-end px-2 py-1">
-          <ColumnVisibilityPanel gridApi={gridApiState} />
+      {(enableColumnVisibility || enableExport) && (
+        <div className="flex items-center justify-end gap-2 px-2 py-1">
+          {enableExport && <ExportButton gridApi={gridApiState} fileName={exportFileName} />}
+          {enableColumnVisibility && <ColumnVisibilityPanel gridApi={gridApiState} />}
         </div>
       )}
 

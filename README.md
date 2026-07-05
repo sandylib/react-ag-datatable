@@ -18,6 +18,7 @@ Built with [Radix UI](https://www.radix-ui.com/) primitives (shadcn-style) and [
 - **Column Header Menu** — Sort, pin, autosize, filter access, column chooser, and reset — all from the header
 - **Integrated Pagination** — Works with both local data and API mode; filter-aware page counts
 - **API Mode (DataSource)** — Pass an async function, and the table handles loading, error, and empty states
+- **CSV / Excel Export** — One-click download as CSV or Excel with an Export button; respects visible columns and active filters
 - **Loading / Error / Empty Overlays** — Built-in skeleton loader, error with retry, and empty state — all overridable
 - **Classical Theme** — CSS-variable-based theme (`--cdt-*` prefix) with dark mode support
 - **Two Modes** — Local mode with client-side filtering/sorting, or API mode with server-side queries
@@ -224,6 +225,34 @@ Enable with a boolean for defaults, or pass a config object.
 <DataTable data={data} columns={columns} pagination pageSize={50} />
 ```
 
+### CSV / Excel Export
+
+Enable a toolbar Export button that downloads the visible, filtered data as CSV or Excel.
+
+```tsx
+<DataTable
+  data={data}
+  columns={columns}
+  enableExport
+  exportFileName="products"
+/>
+```
+
+The export respects:
+- **Visible columns** — hidden columns are excluded
+- **Active filters** — only filtered rows are exported
+- **Value formatters** — formatted values (e.g. `$1,234`) are used in the output
+
+You can also call the export functions directly for custom triggers:
+
+```tsx
+import { exportToCSV, exportToExcel } from '@sandylib27/react-ag-datatable';
+
+// With a GridApi reference
+exportToCSV(gridApi, { fileName: 'report.csv' });
+exportToExcel(gridApi, { fileName: 'report.xlsx' });
+```
+
 ### Custom Overlays
 
 Override the built-in loading, error, and empty state overlays.
@@ -343,6 +372,7 @@ Opens at `http://localhost:5173` with a sidebar listing all examples:
 | **Column Menu** | Header menu with sort, pin, autosize, column chooser |
 | **Local Pagination** | Client-side pagination with page size selector |
 | **API Connected** | Server-side data fetching with loading/error states |
+| **Export** | CSV and Excel download with filtered data |
 | **Theming** | CSS variable overrides and dark mode toggle |
 | **Full Featured** | All features combined in a single table |
 
@@ -366,6 +396,8 @@ The example app resolves imports to the local `src/` so changes are reflected in
 | `enableColumnReorder` | `boolean` | `false` | Enable drag-to-reorder columns. |
 | `enableRowReorder` | `boolean` | `false` | Enable drag-to-reorder rows. |
 | `enableColumnVisibility` | `boolean` | `false` | Show the column visibility toggle panel. |
+| `enableExport` | `boolean` | `false` | Show the CSV/Excel export button in the toolbar. |
+| `exportFileName` | `string` | `'export'` | File name for exports (without extension). |
 | `pagination` | `boolean \| PaginationConfig` | `false` | Enable pagination. Pass `true` for defaults or a config object. |
 | `pageSize` | `number` | `15` | Default page size. Shorthand for `pagination={{ pageSize }}`. |
 | `pageSizeOptions` | `number[]` | `[15, 25, 50, 100]` | Available page sizes in the dropdown. |
@@ -403,6 +435,9 @@ import type {
   SetFilterModel,
   NumberFilterModel,
   NumberFilterOperator,
+
+  // Export
+  ExportOptions,
 
   // Re-exported from AG Grid
   ColDef,

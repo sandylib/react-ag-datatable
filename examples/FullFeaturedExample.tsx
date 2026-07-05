@@ -65,8 +65,8 @@ export default function FullFeaturedExample() {
       <h2>Full-Featured DataTable</h2>
       <p style={{ marginBottom: 12, color: '#666' }}>
         All features enabled: sorting, column filters (SetFilter for text, NumberFilter
-        for salary), column menu, column visibility toggle, and pagination. 30 rows of
-        employee data demonstrating the full power of the DataTable.
+        for salary), column menu, column visibility toggle, CSV/Excel export, and pagination.
+        30 rows of employee data demonstrating the full power of the DataTable.
       </p>
       <DataTable<Employee>
         data={data}
@@ -75,6 +75,8 @@ export default function FullFeaturedExample() {
         enableColumnFilter
         enableColumnMenu
         enableColumnVisibility
+        enableExport
+        exportFileName="employees"
         pagination
         pageSize={10}
         pageSizeOptions={[10, 15, 30]}
