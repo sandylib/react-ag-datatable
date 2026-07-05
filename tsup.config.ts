@@ -1,0 +1,13 @@
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: ['src/index.ts'],
+  format: ['cjs', 'esm'],
+  dts: true,
+  sourcemap: true,
+  clean: true,
+  external: ['react', 'react-dom', 'ag-grid-community', 'ag-grid-react'],
+  treeshake: true,
+  splitting: false,
+  injectStyle: false,
+});

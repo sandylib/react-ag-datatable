@@ -1,0 +1,62 @@
+:root {
+  --cdt-background: 0 0% 100%;
+  --cdt-foreground: 222 47% 11%;
+  --cdt-muted: 210 40% 96%;
+  --cdt-muted-foreground: 215 16% 47%;
+  --cdt-border: 214 32% 91%;
+  --cdt-ring: 222 47% 41%;
+  --cdt-primary: 222 47% 41%;
+  --cdt-primary-foreground: 210 40% 98%;
+  --cdt-destructive: 0 84% 60%;
+  --cdt-hover: 210 40% 96%;
+  --cdt-header-bg: 210 40% 98%;
+  --cdt-row-hover: 210 40% 96%;
+  --cdt-row-selected: 222 47% 96%;
+  --cdt-skeleton: 210 40% 93%;
+  --cdt-radius: 0.375rem;
+  --cdt-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.dark,
+[data-theme='dark'] {
+  --cdt-background: 222 47% 11%;
+  --cdt-foreground: 210 40% 98%;
+  --cdt-muted: 217 33% 17%;
+  --cdt-muted-foreground: 215 20% 65%;
+  --cdt-border: 217 33% 17%;
+  --cdt-ring: 224 64% 63%;
+  --cdt-primary: 224 64% 63%;
+  --cdt-primary-foreground: 222 47% 11%;
+  --cdt-destructive: 0 63% 51%;
+  --cdt-hover: 217 33% 17%;
+  --cdt-header-bg: 222 47% 14%;
+  --cdt-row-hover: 217 33% 17%;
+  --cdt-row-selected: 222 47% 16%;
+  --cdt-skeleton: 217 33% 20%;
+  --cdt-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+}
+
+[data-cdt-datatable] .ag-row-selected {
+  border-left: 2px solid hsl(var(--cdt-primary));
+}
+
+[data-cdt-datatable] .ag-row-hoverable:hover {
+  background-color: hsl(var(--cdt-row-hover));
+}
+
+@keyframes cdt-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.cdt-skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--cdt-skeleton)) 25%,
+    hsl(var(--cdt-muted)) 50%,
+    hsl(var(--cdt-skeleton)) 75%
+  );
+  background-size: 200% 100%;
+  animation: cdt-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--cdt-radius);
+}
