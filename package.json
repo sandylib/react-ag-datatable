@@ -1,6 +1,6 @@
 {
   "name": "@sandylib27/react-ag-datatable",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Production-ready React DataTable wrapping AG Grid Community with enterprise-grade features: searchable set filters, number filters, column header menus, integrated pagination, API mode with loading states, and a classical theme.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
