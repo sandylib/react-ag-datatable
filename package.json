@@ -43,6 +43,9 @@
   ],
   "author": "sandylib27",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sandylib/react-ag-datatable"
