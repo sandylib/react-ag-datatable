@@ -49,6 +49,32 @@ describe('DataTableProps type checks', () => {
     expect(props.dataSource).toBeDefined();
   });
 
+  it('should accept server-side set filter values source', () => {
+    const props: DataTableProps<User> = {
+      dataSource: async () => ({ rows: sampleData, totalRows: 100 }),
+      setFilterValuesSource: async ({ field, filters }) => {
+        expect(field).toBe('name');
+        expect(filters).toBeDefined();
+        return ['Alice', 'Bob'];
+      },
+      columns: sampleColumns,
+      enableColumnFilter: true,
+    };
+    expect(props.setFilterValuesSource).toBeDefined();
+  });
+
+  it('should accept static set filter values', () => {
+    const props: DataTableProps<User> = {
+      dataSource: async () => ({ rows: sampleData, totalRows: 100 }),
+      setFilterValuesSource: {
+        name: ['Alice', 'Bob', 'Carol'],
+      },
+      columns: sampleColumns,
+      enableColumnFilter: true,
+    };
+    expect(props.setFilterValuesSource).toEqual({ name: ['Alice', 'Bob', 'Carol'] });
+  });
+
   it('should accept all optional feature props', () => {
     const props: DataTableProps<User> = {
       data: sampleData,

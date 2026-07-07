@@ -27,6 +27,15 @@ export type DataTableDataSource<TData> = (
   query: DataTableQuery,
 ) => Promise<DataTableResponse<TData>>;
 
+export interface SetFilterValuesQuery {
+  field: string;
+  filters: Record<string, DataTableFilterModel>;
+}
+
+export type SetFilterValuesSource =
+  | Record<string, string[]>
+  | ((query: SetFilterValuesQuery) => Promise<string[]> | string[]);
+
 // ---------------------------------------------------------------------------
 // Pagination config
 // ---------------------------------------------------------------------------
@@ -48,6 +57,9 @@ export interface DataTableProps<TData> {
 
   /** Async data fetcher for API mode. Mutually exclusive with `data`. */
   dataSource?: DataTableDataSource<TData>;
+
+  /** Provides complete set filter values, useful when API mode only loads one page at a time. */
+  setFilterValuesSource?: SetFilterValuesSource;
 
   /** AG Grid column definitions. */
   columns: ColDef<TData>[];

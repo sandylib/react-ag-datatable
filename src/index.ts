@@ -1,6 +1,15 @@
 export { DataTable } from './DataTable';
 
-export type { DataTableProps, DataTableDataSource, DataTableQuery, DataTableResponse, DataTableSortModel, PaginationConfig } from './types';
+export type {
+  DataTableProps,
+  DataTableDataSource,
+  DataTableQuery,
+  DataTableResponse,
+  DataTableSortModel,
+  PaginationConfig,
+  SetFilterValuesQuery,
+  SetFilterValuesSource,
+} from './types';
 
 export type { DataTableFilterModel, SetFilterModel, NumberFilterModel, NumberFilterOperator } from './filters/filter-types';
 

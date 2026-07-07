@@ -87,7 +87,12 @@ export function UsersTable() {
 Pass a `dataSource` function instead of `data`. The component builds a `DataTableQuery` object and calls your function whenever the page, sort, or filters change.
 
 ```tsx
-import { DataTable, type DataTableQuery, type DataTableResponse } from '@sandylib27/react-ag-datatable';
+import {
+  DataTable,
+  type DataTableQuery,
+  type DataTableResponse,
+  type SetFilterValuesSource,
+} from '@sandylib27/react-ag-datatable';
 
 interface User {
   id: number;
@@ -107,10 +112,21 @@ async function fetchUsers(query: DataTableQuery): Promise<DataTableResponse<User
   return res.json(); // { rows: User[], totalRows: number }
 }
 
+const fetchSetFilterValues: SetFilterValuesSource = async ({ field, filters }) => {
+  const res = await fetch('/api/users/filter-values', {
+    method: 'POST',
+    body: JSON.stringify({ field, filters }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  return res.json(); // e.g. ["Admin", "Editor", "Viewer"]
+};
+
 export function UsersTable() {
   return (
     <DataTable<User>
       dataSource={fetchUsers}
+      setFilterValuesSource={fetchSetFilterValues}
       columns={[
         { field: 'name', headerName: 'Name' },
         { field: 'email', headerName: 'Email' },
@@ -126,6 +142,11 @@ export function UsersTable() {
   );
 }
 ```
+
+When API mode only loads one page at a time, set filters should not derive their
+checkbox list from the current grid rows. Provide `setFilterValuesSource` so the
+filter can fetch distinct values from the server. The table passes the target
+`field` plus the other active filters, excluding the current column's own filter.
 
 The `DataTableQuery` sent to your function looks like:
 
@@ -150,6 +171,10 @@ Enabled by default on text columns when `enableColumnFilter` is set. Renders a p
 ```tsx
 <DataTable data={data} columns={columns} enableColumnFilter />
 ```
+
+In API mode, pass `setFilterValuesSource` to supply the complete value list for
+each set-filtered column. Without it, the filter falls back to scanning the rows
+currently loaded in the grid, which is only complete in local mode.
 
 ### Number Filter
 
@@ -372,6 +397,7 @@ Opens at `http://localhost:5173` with a sidebar listing all examples:
 | **Column Menu** | Header menu with sort, pin, autosize, column chooser |
 | **Local Pagination** | Client-side pagination with page size selector |
 | **API Connected** | Server-side data fetching with loading/error states |
+| **API Set Values** | Server-side pagination with complete set-filter values |
 | **Export** | CSV and Excel download with filtered data |
 | **Theming** | CSS variable overrides and dark mode toggle |
 | **Full Featured** | All features combined in a single table |
@@ -386,6 +412,7 @@ The example app resolves imports to the local `src/` so changes are reflected in
 |------|------|---------|-------------|
 | `data` | `TData[]` | — | Row data for local mode. Mutually exclusive with `dataSource`. |
 | `dataSource` | `DataTableDataSource<TData>` | — | Async data fetcher for API mode. Mutually exclusive with `data`. |
+| `setFilterValuesSource` | `SetFilterValuesSource` | — | Complete set-filter values for API mode. Falls back to scanning loaded rows when omitted. |
 | `columns` | `ColDef<TData>[]` | — | AG Grid column definitions. **Required.** |
 | `size` | `'sm' \| 'md'` | `'md'` | Row density. `'sm'` = 36 px rows, `'md'` = 44 px rows. |
 | `bordered` | `boolean` | `false` | Show outer border and rounded corners. |
@@ -426,6 +453,8 @@ import type {
   DataTableQuery,
   DataTableResponse,
   DataTableSortModel,
+  SetFilterValuesQuery,
+  SetFilterValuesSource,
 
   // Pagination
   PaginationConfig,
@@ -468,6 +497,15 @@ interface DataTableResponse<TData> {
 }
 
 type DataTableDataSource<TData> = (query: DataTableQuery) => Promise<DataTableResponse<TData>>;
+
+interface SetFilterValuesQuery {
+  field: string;
+  filters: Record<string, DataTableFilterModel>;
+}
+
+type SetFilterValuesSource =
+  | Record<string, string[]>
+  | ((query: SetFilterValuesQuery) => Promise<string[]> | string[]);
 
 interface PaginationConfig {
   pageSize?: number;

@@ -11,6 +11,7 @@ const examples = [
   { name: 'Column Menu', component: lazy(() => import('./ColumnMenuExample')) },
   { name: 'Local Pagination', component: lazy(() => import('./LocalPaginationExample')) },
   { name: 'API Connected', component: lazy(() => import('./ApiConnectedExample')) },
+  { name: 'API Set Values', component: lazy(() => import('./ApiFilterValuesExample')) },
   { name: 'Export', component: lazy(() => import('./ExportExample')) },
   { name: 'Theming', component: lazy(() => import('./ThemingExample')) },
   { name: 'Full Featured', component: lazy(() => import('./FullFeaturedExample')) },

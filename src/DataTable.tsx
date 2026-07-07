@@ -40,6 +40,7 @@ function isNumericColumn<TData>(col: ColDef<TData>): boolean {
 export function DataTable<TData>({
   data,
   dataSource,
+  setFilterValuesSource,
   columns,
   size = 'md',
   bordered,
@@ -85,6 +86,11 @@ export function DataTable<TData>({
   const apiQuery: DataTableQuery = useMemo(
     () => ({ page: apiPage, pageSize: apiPageSize, sort: apiSort, filters: apiFilters }),
     [apiPage, apiPageSize, apiSort, apiFilters],
+  );
+
+  const gridContext = useMemo(
+    () => ({ setFilterValuesSource, filters: apiFilters }),
+    [setFilterValuesSource, apiFilters],
   );
 
   const { data: apiData, totalRows: apiTotalRows, isLoading, error, refetch } = useDataSource(
@@ -317,6 +323,7 @@ export function DataTable<TData>({
         theme={gridTheme}
         icons={gridIcons}
         rowData={rowData}
+        context={gridContext}
         columnDefs={agColumns}
         defaultColDef={defaultColDef}
         rowHeight={rowHeight}
